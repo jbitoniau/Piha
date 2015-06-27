@@ -1,0 +1,13 @@
+#pragma once
+
+#cmakedefine PIHA_DIRECTINPUT_SUPPORT
+#cmakedefine PIHA_DIRECTSHOW_SUPPORT
+#cmakedefine PIHA_XINPUT_SUPPORT
+
+#cmakedefine PIHA_I2CDEVLIB_SUPPORT
+#cmakedefine PIHA_LINUXJOYSTICK_SUPPORT
+#cmakedefine PIHA_RPIOPWM_SUPPORT
+
+#cmakedefine PIHA_PHIDGET_SUPPORT
+#cmakedefine PIHA_POLOLUMAESTRO_SUPPORT
+

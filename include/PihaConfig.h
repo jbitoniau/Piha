@@ -1,0 +1,13 @@
+#pragma once
+
+/* #undef PIHA_DIRECTINPUT_SUPPORT */
+/* #undef PIHA_DIRECTSHOW_SUPPORT */
+/* #undef PIHA_XINPUT_SUPPORT */
+
+/* #undef PIHA_I2CDEVLIB_SUPPORT */
+/* #undef PIHA_LINUXJOYSTICK_SUPPORT */
+/* #undef PIHA_RPIOPWM_SUPPORT */
+
+/* #undef PIHA_PHIDGET_SUPPORT */
+/* #undef PIHA_POLOLUMAESTRO_SUPPORT */
+
