@@ -62,6 +62,39 @@ SET(	COMPONENTS_SOURCES
 		"src/PihaCamera.cpp"
 		"src/PihaPWM.cpp"
 	)
+#
+# Provider-specific source files
+#
+IF( CMAKE_SYSTEM_NAME MATCHES "Windows" )
+	OPTION( PIHA_XINPUT_SUPPORT "Windows XInput support" ON )
+	# ...
+ELSEIF( CMAKE_SYSTEM_NAME MATCHES "Linux" )
+	# ...
+ENDIF()
+# ...
+
+IF ( PIHA_XINPUT_SUPPORT )
+	FIND_PACKAGE( RapaXInput CONFIG REQUIRED )
+	IF( RapaXInput_FOUND  )
+
+		MESSAGE("===> RapaXInput_DIR= ${RapaXInput_DIR}")
+		SET( EXTRA_HEADERS ${EXTRA_HEADERS} 
+			 "include/PihaProviderXInput.h" )
+		SET( EXTRA_SOURCES ${EXTRA_SOURCES} 						
+			 "src/PihaProviderXInput.cpp" )
+		SET( EXTRA_INCLUDE_DIRS ${EXTRA_INCLUDE_DIRS} 
+			 ${RapaXInput_INCLUDE_DIRS} )	# No need to add XInput to include dirs, only RapaXInput
+		SET( EXTRA_LIBS ${EXTRA_LIBS} 
+			 Rapa::RapaXInput )
+
+		SET( DEPENDENCY_LIB_NAMES ${DEPENDENCY_LIB_NAMES} 
+			 RapaXInput )
+		SET( DEPENDENCY_DIRS ${DEPENDENCY_DIRS} 
+			 ${RapaXInput_DIR} )
+	ELSE()
+		SET( PIHA_XINPUT_SUPPORT OFF )
+	ENDIF()
+ENDIF()
 	
 #
 # Platform-specific source files
@@ -105,10 +138,35 @@ IF( CMAKE_SYSTEM_NAME MATCHES "Windows" )
 	SET(CMAKE_DEBUG_POSTFIX "d")
 ENDIF()
 
+
 INCLUDE_DIRECTORIES("include")
 INCLUDE_DIRECTORIES(${EXTRA_INCLUDE_DIRS})
 ADD_LIBRARY( ${PROJECT_NAME} STATIC ${SOURCES} )
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME} ${EXTRA_LIBS}  ) 
+
+
+#
+# Piha install
+#
+#
+# Install
+#
+INSTALL(TARGETS ${PROJECT_NAME} EXPORT MyInstallTargets
+		LIBRARY DESTINATION lib
+		ARCHIVE DESTINATION lib
+		RUNTIME DESTINATION bin )
+		#INCLUDES DESTINATION include )		# If uncommented, the ${PROJECT_NAME} target contains INCLUDE_DIRECTORIES information. Importing the target automatically adds this directory to the INCLUDE_DIRECTORIES.
+		
+SET( TARGET_NAMESPACE Rapa:: )
+INSTALL( FILES ${BASE_HEADERS} ${COMPONENTS_HEADERS} ${EXTRA_HEADERS} DESTINATION include COMPONENT Devel )
+EXPORT( EXPORT MyInstallTargets FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"  )
+CONFIGURE_FILE( cmake/${PROJECT_NAME}Config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake" @ONLY )
+SET( ConfigPackageLocation lib/cmake/${PROJECT_NAME} )
+INSTALL(EXPORT MyInstallTargets
+		FILE ${PROJECT_NAME}Targets.cmake
+		NAMESPACE ${TARGET_NAMESPACE}
+		DESTINATION ${ConfigPackageLocation} )
+INSTALL( FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake" DESTINATION ${ConfigPackageLocation} COMPONENT Devel )
 
 
 #

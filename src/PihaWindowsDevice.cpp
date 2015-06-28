@@ -16,7 +16,7 @@
 	#include "PihaPololuMaestroProvider.h"
 #endif
 #ifdef PIHA_XINPUT_SUPPORT
-	#include "PihaXInputProvider.h"
+	#include "PihaProviderXInput.h"
 #endif
 
 namespace Piha
@@ -52,7 +52,7 @@ WindowsDevice::WindowsDevice( bool consoleApplication )
 #endif
 
 #ifdef PIHA_XINPUT_SUPPORT
-	provider = new XInputProvider();
+	provider = new ProviderXInput();
 	provider->addListener(this);
 	mDeviceProviders.push_back( provider );
 #endif
