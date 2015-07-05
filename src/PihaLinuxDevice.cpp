@@ -4,7 +4,7 @@
 #include "PihaConfig.h"
 
 #ifdef PIHA_I2CDEVLIB_SUPPORT
-	#include "PihaI2CDevLibProvider.h"
+	#include "PihaProviderI2CDevLib.h"
 #endif
 #ifdef PIHA_LINUXJOYSTICK_SUPPORT
 	#include "PihaLinuxJoystickProvider.h"
@@ -16,7 +16,7 @@
 	#include "PihaPololuMaestroProvider.h"
 #endif
 #ifdef PIHA_RPIOPWM_SUPPORT
-	#include "PihaRPIOPWMProvider.h"
+	#include "PihaProviderRPIOPWM.h"
 #endif
 
 namespace Piha
@@ -29,11 +29,11 @@ LinuxDevice::LinuxDevice(/*unsigned int pwmChannelSubcycleTimeInUs*/)
 	DeviceProvider* provider = NULL;
 
 #ifdef PIHA_I2CDEVLIB_SUPPORT
-	I2CDevLibProvider::I2cDeviceIdentifiers deviceIdentifiers;	
-	deviceIdentifiers.push_back( I2CDevLibProvider::I2cDeviceIdentifier( I2CDevLibProvider::kMPU6050, 0x69 /*105*/) );
-	deviceIdentifiers.push_back( I2CDevLibProvider::I2cDeviceIdentifier( I2CDevLibProvider::kHMC5883L, 0x1E /*30*/) );
-	deviceIdentifiers.push_back( I2CDevLibProvider::I2cDeviceIdentifier( I2CDevLibProvider::kMS561101BA, 0x77 /*119*/) );
-	provider = new I2CDevLibProvider( "/dev/i2c-1", deviceIdentifiers);
+	ProviderI2CDevLib::I2cDeviceIdentifiers deviceIdentifiers;	
+	deviceIdentifiers.push_back( ProviderI2CDevLib::I2cDeviceIdentifier( ProviderI2CDevLib::kMPU6050, 0x69 /*105*/) );
+	deviceIdentifiers.push_back( ProviderI2CDevLib::I2cDeviceIdentifier( ProviderI2CDevLib::kHMC5883L, 0x1E /*30*/) );
+	deviceIdentifiers.push_back( ProviderI2CDevLib::I2cDeviceIdentifier( ProviderI2CDevLib::kMS561101BA, 0x77 /*119*/) );
+	provider = new ProviderI2CDevLib( "/dev/i2c-1", deviceIdentifiers);
 	provider->addListener(this);
 	mDeviceProviders.push_back( provider );
 #endif
@@ -62,7 +62,7 @@ LinuxDevice::LinuxDevice(/*unsigned int pwmChannelSubcycleTimeInUs*/)
 	//gpios.push_back( 23 );
 	gpios.push_back( 24 );
 	gpios.push_back( 25 );
-    provider = new RPIOPWMProvider(gpios, pwmChannelSubcycleTimeInUs);
+    provider = new ProviderRPIOPWM(gpios, pwmChannelSubcycleTimeInUs);
 	provider->addListener(this);
 	mDeviceProviders.push_back( provider );
 #endif
