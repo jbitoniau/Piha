@@ -1,0 +1,13 @@
+go in dependencies and GetDependencies
+go through each dependency, for each one:
+	build it (possibly debug and release on Windows)
+	install it
+on Windows, use batch build of the INSTALL target in Debug/Release
+
+then go to root Piha folder 
+	mkdir _build_
+	cd _build_
+	cmake .. -G"Visual Studio 10 2010" -DCMAKE_PREFIX_PATH="dependencies\RapaXInput;dependencies\RapaDirectInput" -DPIHA_USE_QT5=FALSE -DCMAKE_INSTALL_PREFIX=".."
+
+	
+	

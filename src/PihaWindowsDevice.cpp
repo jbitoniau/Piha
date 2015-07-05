@@ -4,7 +4,7 @@
 #include "PihaConfig.h"
 
 #ifdef PIHA_DIRECTINPUT_SUPPORT
-	#include "PihaDirectInputProvider.h"
+	#include "PihaProviderDirectInput.h"
 #endif
 #ifdef PIHA_DIRECTSHOW_SUPPORT
 	#include "PihaDirectShowProvider.h"
@@ -28,7 +28,7 @@ WindowsDevice::WindowsDevice( bool consoleApplication )
 {
 	DeviceProvider* provider = NULL;
 #ifdef PIHA_DIRECTINPUT_SUPPORT
-	provider = new PihaDirectInputProvider(true, consoleApplication);
+	provider = new PihaProviderDirectInput(true, consoleApplication);
 	provider->addListener(this);
 	mDeviceProviders.push_back( provider );
 #endif
